@@ -15,6 +15,9 @@ function initHud() {
                 letter-spacing:0.05em; transition:background 0.15s, color 0.15s; }
     .hud-pill.on  { background:#6ecfa0; color:#0a0a0f; }
     .hud-pill.off { background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.3); }
+    #hud-exit { position:fixed; bottom:18px; right:18px; z-index:150;
+                font-family:sans-serif; font-size:11px; color:rgba(255,255,255,0.18);
+                pointer-events:none; letter-spacing:0.04em; }
   `
   document.head.appendChild(style)
 
@@ -29,6 +32,12 @@ function initHud() {
     </div>
   `
   document.body.appendChild(el)
+
+  const exitHint = document.createElement('div')
+  exitHint.id = 'hud-exit'
+  exitHint.textContent = 'Ctrl+Shift+Q'
+  document.body.appendChild(exitHint)
+
   fillEl       = document.getElementById('hud-vol-fill')
   reverbEl     = document.getElementById('hud-reverb')
   chorusEl     = document.getElementById('hud-chorus')
@@ -40,7 +49,7 @@ function setHudInstrument(instrument) {
 }
 
 function setHudVolume(vol) {
-  if (fillEl) fillEl.style.width = `${Math.round((vol / 0.8) * 100)}px`
+  if (fillEl) fillEl.style.width = `${Math.round(vol * 100)}px`
 }
 
 function setHudReverb(on) {

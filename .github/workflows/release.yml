@@ -1,0 +1,50 @@
+name: Build and Release
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Check version bump
+        id: ver
+        shell: pwsh
+        run: |
+          $new = (Get-Content package.json | ConvertFrom-Json).version
+          $old = git show HEAD~1:package.json 2>$null | ConvertFrom-Json | Select-Object -ExpandProperty version
+          if ($new -ne $old) {
+            "changed=true"  >> $env:GITHUB_OUTPUT
+            "version=$new"  >> $env:GITHUB_OUTPUT
+          } else {
+            "changed=false" >> $env:GITHUB_OUTPUT
+          }
+
+      - uses: actions/setup-node@v4
+        if: steps.ver.outputs.changed == 'true'
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        if: steps.ver.outputs.changed == 'true'
+        run: npm ci
+
+      - name: Build portable .exe
+        if: steps.ver.outputs.changed == 'true'
+        run: npm run build:win
+
+      - name: Create GitHub Release
+        if: steps.ver.outputs.changed == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.ver.outputs.version }}
+          name: v${{ steps.ver.outputs.version }}
+          files: dist/*.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
