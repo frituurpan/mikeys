@@ -1,6 +1,6 @@
 {
   "name": "music-playground",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Music playground for Mikey",
   "main": "src/main.js",
   "scripts": {
