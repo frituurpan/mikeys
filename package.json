@@ -1,0 +1,38 @@
+{
+  "name": "music-playground",
+  "version": "1.0.0",
+  "description": "Music playground for Mikey",
+  "main": "src/main.js",
+  "scripts": {
+    "bundle": "esbuild renderer/app.js --bundle --format=cjs --external:electron --external:path --external:fs --external:os --outfile=renderer/bundle.js",
+    "start": "npm run bundle && electron .",
+    "build:win": "npm run bundle && electron-builder --win"
+  },
+  "build": {
+    "appId": "com.family.musicplayground",
+    "productName": "Music Playground",
+    "win": {
+      "target": "portable",
+      "signingHashAlgorithms": null,
+      "sign": null
+    },
+    "extraResources": [
+      { "from": "assets/sounds.sf2", "to": "assets/sounds.sf2" },
+      { "from": "node_modules/spessasynth_lib/dist/spessasynth_processor.min.js", "to": "spessasynth_processor.min.js" }
+    ],
+    "files": [
+      "src/**/*",
+      "renderer/index.html",
+      "renderer/bundle.js",
+      "package.json"
+    ]
+  },
+  "dependencies": {
+    "spessasynth_lib": "4.2.15"
+  },
+  "devDependencies": {
+    "electron": "35.7.5",
+    "electron-builder": "25.1.8",
+    "esbuild": "0.28.0"
+  }
+}

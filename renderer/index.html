@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Music Playground</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #0a0a0f; }
+    canvas { display: block; }
+    #midi-status {
+      display: none;
+      position: fixed;
+      bottom: 14px;
+      right: 14px;
+      background: rgba(160, 0, 0, 0.85);
+      color: #fff;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-family: sans-serif;
+      font-size: 14px;
+      z-index: 200;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  <div id="midi-status">⚠ Keyboard not connected</div>
+  <script src="bundle.js"></script>
+</body>
+</html>
