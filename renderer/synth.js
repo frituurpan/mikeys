@@ -1,6 +1,9 @@
 const path = require('path')
 const fs   = require('fs')
 
+const MAX_VOLUME = 1.2
+const clampVolume = v => Math.min(Math.max(v, 0), MAX_VOLUME)
+
 const INSTRUMENTS = [
   { name: 'Piano',        program: 0,  icon: '🎹' },
   { name: 'Marimba',      program: 12, icon: '🥁' },
@@ -23,7 +26,7 @@ function getInstrumentIndex() { return currentIdx }
 function getCurrentInstrument() { return INSTRUMENTS[currentIdx] }
 
 async function initSynth(sfBuffer, instrumentIndex = 0, vol = 0.6) {
-  volume     = Math.min(vol, 1.2)
+  volume     = clampVolume(vol)
   currentIdx = instrumentIndex
 
   audioCtx = new AudioContext({ latencyHint: 'interactive' })
@@ -140,7 +143,7 @@ function cycleInstrument(direction) {
 }
 
 function setVolume(vol) {
-  volume = Math.min(vol, 1.2)
+  volume = clampVolume(vol)
   if (gainNode && audioCtx) {
     gainNode.gain.setTargetAtTime(volume, audioCtx.currentTime, 0.02)
   }
@@ -171,6 +174,7 @@ function setChorus(on) {
 }
 
 module.exports = {
+  MAX_VOLUME,
   getInstruments, getInstrumentIndex, getCurrentInstrument,
   initSynth, noteOn, noteOff, pitchBend,
   setInstrument, cycleInstrument, setVolume, controllerChange, setReverb, setChorus,

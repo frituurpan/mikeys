@@ -10,7 +10,7 @@ const { initMidi, onNoteOn, onNoteOff,
         onVolumeChange, onReverbChange, onChorusChange }          = require('./midi.js')
 const { initVisuals, triggerNoteOn, triggerNoteOff,
         showInstrumentOverlay }                                   = require('./visuals.js')
-const { initPanel, togglePanel }                                  = require('./panel.js')
+const { initPanel, togglePanel, setPanelVolume }                  = require('./panel.js')
 const { initHud, setHudInstrument, setHudVolume,
         setHudReverb, setHudChorus }                             = require('./hud.js')
 
@@ -62,7 +62,7 @@ const { initHud, setHudInstrument, setHudVolume,
     saveConfig({ instrumentIndex: idx })
   })
 
-  onVolumeChange(vol => setHudVolume(vol))
+  onVolumeChange(vol => { setHudVolume(vol); setPanelVolume(vol) })
   onReverbChange(on  => setHudReverb(on))
   onChorusChange(on  => setHudChorus(on))
 

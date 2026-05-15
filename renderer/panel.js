@@ -1,4 +1,4 @@
-const { getInstruments, setInstrument, setVolume } = require('./synth.js')
+const { getInstruments, setInstrument, setVolume, MAX_VOLUME } = require('./synth.js')
 const { getConfig, saveConfig } = require('./config.js')
 const { showInstrumentOverlay } = require('./visuals.js')
 
@@ -18,8 +18,12 @@ function togglePanel() {
 
 function syncPanel() {
   const cfg = getConfig()
-  const slider = panelEl.querySelector('#vol-slider')
-  if (slider) slider.value = cfg.volume
+  setPanelVolume(cfg.volume)
+}
+
+function setPanelVolume(vol) {
+  const slider = panelEl?.querySelector('#vol-slider')
+  if (slider) slider.value = vol
 }
 
 function buildPanel() {
@@ -52,7 +56,7 @@ function buildPanel() {
   slider.type  = 'range'
   slider.id    = 'vol-slider'
   slider.min   = '0'
-  slider.max   = '1.2'
+  slider.max   = String(MAX_VOLUME)
   slider.step  = '0.05'
   slider.value = getConfig().volume
   Object.assign(slider.style, { width: '500px', height: '44px', cursor: 'default' })
@@ -104,4 +108,4 @@ function el(tag, text, styles = {}) {
   return node
 }
 
-module.exports = { initPanel, togglePanel }
+module.exports = { initPanel, togglePanel, setPanelVolume }

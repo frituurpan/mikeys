@@ -1,3 +1,5 @@
+const { MAX_VOLUME } = require('./synth.js')
+
 let fillEl, reverbEl, chorusEl, instrumentEl
 
 function initHud() {
@@ -49,7 +51,7 @@ function setHudInstrument(instrument) {
 }
 
 function setHudVolume(vol) {
-  if (fillEl) fillEl.style.width = `${Math.round((vol / 1.2) * 100)}px`
+  if (fillEl) fillEl.style.width = `${Math.round((vol / MAX_VOLUME) * 100)}px`
 }
 
 function setHudReverb(on) {

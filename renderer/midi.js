@@ -1,4 +1,4 @@
-const { noteOn, noteOff, pitchBend, setInstrument, setVolume, controllerChange, setReverb, setChorus } = require('./synth.js')
+const { noteOn, noteOff, pitchBend, setInstrument, setVolume, controllerChange, setReverb, setChorus, MAX_VOLUME } = require('./synth.js')
 
 // Program Change values sent by each ProKeys Sono 61 voice button.
 // Order: Grand Piano, Bright Piano, Electric Piano, Organ, Clavinet buttons.
@@ -66,7 +66,7 @@ function handleMessage(event) {
     pitchBend((d2 << 7) | d1)
   } else if (cmd === CC) {
     if (d1 === 7) {
-      const vol = (d2 / 127) * 0.8
+      const vol = (d2 / 127) * MAX_VOLUME
       setVolume(vol)
       _onVolumeChange?.(vol)
     } else if (d1 === 91) {
