@@ -23,7 +23,7 @@ function getInstrumentIndex() { return currentIdx }
 function getCurrentInstrument() { return INSTRUMENTS[currentIdx] }
 
 async function initSynth(sfBuffer, instrumentIndex = 0, vol = 0.6) {
-  volume     = Math.min(vol, 1.0)
+  volume     = Math.min(vol, 1.2)
   currentIdx = instrumentIndex
 
   audioCtx = new AudioContext({ latencyHint: 'interactive' })
@@ -140,7 +140,7 @@ function cycleInstrument(direction) {
 }
 
 function setVolume(vol) {
-  volume = Math.min(vol, 1.0)
+  volume = Math.min(vol, 1.2)
   if (gainNode && audioCtx) {
     gainNode.gain.setTargetAtTime(volume, audioCtx.currentTime, 0.02)
   }

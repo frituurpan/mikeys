@@ -52,7 +52,7 @@ function buildPanel() {
   slider.type  = 'range'
   slider.id    = 'vol-slider'
   slider.min   = '0'
-  slider.max   = '0.8'
+  slider.max   = '1.2'
   slider.step  = '0.05'
   slider.value = getConfig().volume
   Object.assign(slider.style, { width: '500px', height: '44px', cursor: 'default' })

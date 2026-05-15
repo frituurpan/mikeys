@@ -49,7 +49,7 @@ function setHudInstrument(instrument) {
 }
 
 function setHudVolume(vol) {
-  if (fillEl) fillEl.style.width = `${Math.round(vol * 100)}px`
+  if (fillEl) fillEl.style.width = `${Math.round((vol / 1.2) * 100)}px`
 }
 
 function setHudReverb(on) {
