@@ -1,8 +1,11 @@
 const path = require('path')
 const fs   = require('fs')
 
-const MAX_VOLUME = 1.2
+const MAX_VOLUME = 1.44
 const clampVolume = v => Math.min(Math.max(v, 0), MAX_VOLUME)
+
+const VELOCITY_CURVE_EXP = 0.5
+const curveVelocity = v => Math.max(1, Math.min(127, Math.round(127 * Math.pow(v / 127, VELOCITY_CURVE_EXP))))
 
 const INSTRUMENTS = [
   { name: 'Piano',        program: 0,  icon: '🎹' },
@@ -84,7 +87,7 @@ function noteOn(midiNote, velocity) {
   if (audioCtx?.state === 'suspended') audioCtx.resume()
 
   if (synth) {
-    try { synth.noteOn(0, midiNote, velocity) } catch (e) { console.error('noteOn:', e) }
+    try { synth.noteOn(0, midiNote, curveVelocity(velocity)) } catch (e) { console.error('noteOn:', e) }
     return
   }
 
@@ -100,7 +103,7 @@ function noteOn(midiNote, velocity) {
   osc.connect(env)
   env.connect(gainNode)
 
-  const v = (velocity / 127) * volume
+  const v = (curveVelocity(velocity) / 127) * volume
   env.gain.setValueAtTime(0, audioCtx.currentTime)
   env.gain.linearRampToValueAtTime(v, audioCtx.currentTime + 0.01)
   osc.start()
