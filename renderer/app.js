@@ -4,7 +4,7 @@ const fs              = require('fs')
 
 const { loadConfig, saveConfig }                                  = require('./config.js')
 const { initSynth, setVolume, setInstrument,
-        getInstruments, getCurrentInstrument }                    = require('./synth.js')
+        getInstruments, getCurrentInstrument, MAX_VOLUME }        = require('./synth.js')
 const { initMidi, onNoteOn, onNoteOff,
         onInstrumentChange, onConnectionChange,
         onVolumeChange, onReverbChange, onChorusChange }          = require('./midi.js')
@@ -19,6 +19,8 @@ const { initHud, setHudInstrument, setHudVolume,
   initVisuals(canvas)
 
   const cfg        = await loadConfig()
+  cfg.volume       = MAX_VOLUME
+  await saveConfig({ volume: MAX_VOLUME })
   const assetsPath = await ipcRenderer.invoke('get-assets-path')
   const sfPath     = path.join(assetsPath, 'sounds.sf2')
 
